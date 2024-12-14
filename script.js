@@ -3,6 +3,7 @@ const fetchDataButton = document.getElementById('fetchDataButton');
 const dataDisplay = document.getElementById('dataDisplay');
 const fetchDataXHRButton = document.getElementById('fetchDataXHRButton');
 const postForm = document.getElementById('postForm');
+const putForm = document.getElementById('putForm');
 
 // Event listener for fetch button using fetch()
 fetchDataButton.addEventListener('click', function () {
@@ -19,6 +20,12 @@ fetchDataXHRButton.addEventListener('click', function () {
 postForm.addEventListener('submit', function(event) {
     event.preventDefault();  // Prevent the default form submission behavior
     sendPostRequest();
+});
+
+// Event listener for form submission (PUT request)
+putForm.addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent the default form submission behavior
+    updatePostRequest();
 });
 
 // Function to fetch data using fetch() method
@@ -108,4 +115,43 @@ function sendPostRequest() {
     .catch(error => {
         dataDisplay.innerHTML = `<p>Error: ${error.message}</p>`;
     });
+}
+
+// Function to update data using PUT method (Task 4)
+function updatePostRequest() {
+    const updateId = document.getElementById('updateId').value;
+    const updateTitle = document.getElementById('updateTitle').value;
+    const updateBody = document.getElementById('updateBody').value;
+    
+    const updatedPostData = {
+        title: updateTitle,
+        body: updateBody,
+        userId: 1
+    };
+
+    const url = `https://jsonplaceholder.typicode.com/posts/${updateId}`;
+    
+    const xhr = new XMLHttpRequest();
+    xhr.open('PUT', url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            const data = JSON.parse(xhr.responseText);
+            dataDisplay.innerHTML = `
+                <h2>Post Updated Successfully</h2>
+                <p>Updated Title: ${data.title}</p>
+                <p>Updated Body: ${data.body}</p>
+                <p>Updated ID: ${data.id}</p>
+            `;
+        } else {
+            dataDisplay.innerHTML = `<p>Error: Failed to update data (Status: ${xhr.status})</p>`;
+        }
+    };
+
+    xhr.onerror = function() {
+        dataDisplay.innerHTML = `<p>Error: Network error occurred</p>`;
+    };
+
+    xhr.send(JSON.stringify(updatedPostData));
 }

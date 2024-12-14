@@ -23,6 +23,20 @@
         <button type="submit">Send Post</button>
     </form>
 
+     <!-- Form to Update Data -->
+     <form id="putForm">
+        <label for="updateId">Post ID (to update):</label>
+        <input type="number" id="updateId" name="id" required>
+
+        <label for="updateTitle">New Post Title:</label>
+        <input type="text" id="updateTitle" name="title" required>
+
+        <label for="updateBody">New Post Body:</label>
+        <textarea id="updateBody" name="body" required></textarea>
+
+        <button type="submit">Update Post</button>
+    </form>
+
     <!-- Display the Data -->
     <div id="dataDisplay"></div>
 
