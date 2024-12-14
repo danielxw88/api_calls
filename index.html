@@ -8,7 +8,22 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+      <!-- Fetch Data Buttons -->
     <button id="fetchDataButton">Fetch Data with fetch()</button>
+    <button id="fetchDataXHRButton">Fetch Data with XHR</button>
+    
+    <!-- Form to Send Data -->
+    <form id="postForm">
+        <label for="postTitle">Post Title:</label>
+        <input type="text" id="postTitle" name="title" required>
+
+        <label for="postBody">Post Body:</label>
+        <textarea id="postBody" name="body" required></textarea>
+
+        <button type="submit">Send Post</button>
+    </form>
+
+    <!-- Display the Data -->
     <div id="dataDisplay"></div>
 
     

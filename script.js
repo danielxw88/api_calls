@@ -2,6 +2,7 @@
 const fetchDataButton = document.getElementById('fetchDataButton');
 const dataDisplay = document.getElementById('dataDisplay');
 const fetchDataXHRButton = document.getElementById('fetchDataXHRButton');
+const postForm = document.getElementById('postForm');
 
 // Event listener for fetch button using fetch()
 fetchDataButton.addEventListener('click', function () {
@@ -12,6 +13,12 @@ fetchDataButton.addEventListener('click', function () {
 // Event listener for fetch button using XMLHttpRequest
 fetchDataXHRButton.addEventListener('click', function () {
     fetchDataWithXHR();
+});
+
+// Event listener for form submission (POST request)
+postForm.addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent the default form submission behavior
+    sendPostRequest();
 });
 
 // Function to fetch data using fetch() method
@@ -64,4 +71,41 @@ function fetchDataWithXHR() {
 
 
     xhr.send();
+}
+
+// Function to send data using POST method
+function sendPostRequest() {
+    const postTitle = document.getElementById('postTitle').value;
+    const postBody = document.getElementById('postBody').value;
+    
+    const postData = {
+        title: postTitle,
+        body: postBody,
+        userId: 1  
+    };
+
+    fetch('https://jsonplaceholder.typicode.com/posts', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postData),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to send data');
+        }
+        return response.json();
+    })
+    .then(data => {
+        dataDisplay.innerHTML = `
+            <h2>Post Sent Successfully</h2>
+            <p>Title: ${data.title}</p>
+            <p>Body: ${data.body}</p>
+            <p>ID: ${data.id}</p>
+        `;
+    })
+    .catch(error => {
+        dataDisplay.innerHTML = `<p>Error: ${error.message}</p>`;
+    });
 }
